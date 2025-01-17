@@ -20,6 +20,7 @@ type FoodType = {
   _id: number;
   price: string;
   image: string;
+  ingredients: string;
   categoryId: string;
 };
 
@@ -93,9 +94,14 @@ export default function Page() {
               className="border outline-1 rounded-sm h-[271px] w-[250px]"
               key={name._id}
             >
-              <div className="pb-2 text-red-500 font-medium">{name.name}</div>
-              <div>{name.price}</div>
-              <img src={name.image} />
+              <img className="mt-2" src={name.image} />
+              <div className="flex justify-between mt-2">
+                <div className="pb-2 text-red-500 font-lg font-bold">
+                  {name.name}
+                </div>
+                <div>{name.price}</div>
+              </div>
+              <div className="text-sm mt-2">{name.ingredients}</div>
             </div>
           ))}
         </div>

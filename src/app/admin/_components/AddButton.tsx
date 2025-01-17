@@ -95,6 +95,7 @@ export default function AddButton() {
               value={food.name}
               onChange={handleChange}
               placeholder="Enter dish name"
+              className="w-full p-2 border rounded"
             />
             <div className="flex flex-col mt-4 space-y-4 flex-wrap">
               <div>
