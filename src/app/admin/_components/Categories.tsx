@@ -38,17 +38,13 @@ export default function Category() {
   }, []);
 
   return (
-    <Popover>
-      <PopoverTrigger>
-        <div className="flex font-bold gap-1"> Dishes category</div>
-      </PopoverTrigger>
-      <PopoverContent className="gap-1">
-        <div className="flex gap-1">
+    <>
+      <div className="border outline-1 rounded-sm ml-10 h-32">
+        <div className="flex font-bold gap-1 ml-5 mt-5">Dishes category</div>
+        <div className="flex gap-1 ml-5 flex-wrap">
           {categories.map((category) => (
-            <Link href={`/admin/food/${category._id}`}>
-              <Badge variant="outline" key={category._id}>
-                {category.categoryName}
-              </Badge>
+            <Link key={category._id} href={`/admin/food/${category._id}`}>
+              <Badge variant="outline">{category.categoryName}</Badge>
             </Link>
           ))}
           <button
@@ -58,7 +54,7 @@ export default function Category() {
             +
           </button>
         </div>
-      </PopoverContent>
-    </Popover>
+      </div>
+    </>
   );
 }
