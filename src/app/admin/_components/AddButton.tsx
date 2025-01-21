@@ -138,7 +138,7 @@ export default function AddButton() {
                   <img
                     src={food.image}
                     alt="Food"
-                    width={100}
+                    width={300}
                     className="block w-full"
                   />
                 )}

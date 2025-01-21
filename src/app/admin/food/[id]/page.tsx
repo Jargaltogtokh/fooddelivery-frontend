@@ -13,7 +13,6 @@ import { setgid } from "process";
 import { useState, useEffect } from "react";
 import Category from "../../_components/Categories";
 import AddButton from "../../_components/AddButton";
-import AddButtonDialog from "../../_components/AddButton-1";
 
 type FoodType = {
   name: string;
