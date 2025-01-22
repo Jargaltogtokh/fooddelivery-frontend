@@ -41,7 +41,11 @@ export function AdminSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Nom nom </SidebarGroupLabel>
+          <SidebarGroupLabel>
+            <a href="http://localhost:3000/user">
+              <img src="logo container.png" className="w-120 h-12" />
+            </a>
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (

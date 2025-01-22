@@ -40,11 +40,11 @@ export function Section({ category }: { category: CategoryType }) {
 
   return (
     <>
-      <div className="border outline-1 rounded-sm ml-10 h-80">
-        <div className="flex font-bold gap-1 ml-5 mt-5">
+      <div className="flex-wrap rounded-sm ml-10">
+        <div className="flex font-bold gap-1 ml-5 mt-5 text-white">
           {category?.categoryName}
         </div>
-        <div className="flex gap-[20px]">
+        <div className="flex gap-[20px] flex-wrap">
           {name.map((name) => (
             <div
               className="border outline-1 rounded-sm h-[271px] w-[250px] bg-white"

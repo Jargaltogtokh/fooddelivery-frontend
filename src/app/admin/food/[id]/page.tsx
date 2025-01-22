@@ -40,6 +40,7 @@ export default function Page() {
   const [name, setName] = useState<FoodType[]>([]);
 
   const [categoryName, setCategoryName] = useState<string>("");
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   const addFood = async () => {
     const name = prompt("Enter new food to the category");
@@ -81,10 +82,12 @@ export default function Page() {
   return (
     <>
       <Category />
-      <div className="border outline-1 rounded-sm ml-10 h-80">
-        <div className="flex font-bold gap-1 ml-5 mt-5">{categoryName}</div>
+      <div className="border outline-1 rounded-sm ml-10">
+        <div className="flex flex-wrap font-bold gap-1 ml-5 mt-5">
+          {categoryName}
+        </div>
 
-        <div className="flex ml-5 gap-1">
+        <div className="flex ml-5 gap-1 flex-wrap">
           <div className="border outline-dashed outline-red-500 rounded-sm h-[271px] w-[250px]">
             <AddButton />
           </div>
@@ -103,6 +106,7 @@ export default function Page() {
               <div className="text-sm mt-2">{name.ingredients}</div>
             </div>
           ))}
+          <div className="flex gap-1 ml-5 flex-wrap"></div>
         </div>
       </div>
     </>
