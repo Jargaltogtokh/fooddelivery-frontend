@@ -52,7 +52,7 @@ export default function CategoryUser({
           >
             <Badge
               variant="outline"
-              className="bg-white text-black hover:bg-red-500"
+              className="bg-white text-black hover: bg-red-500"
             >
               {category.categoryName}
             </Badge>

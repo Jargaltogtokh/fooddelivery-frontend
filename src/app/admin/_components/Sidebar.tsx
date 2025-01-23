@@ -42,7 +42,7 @@ export function AdminSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>
-            <a href="http://localhost:3000/user">
+            <a href="http://localhost:3000">
               <img src="logo container.png" className="w-120 h-12" />
             </a>
           </SidebarGroupLabel>
