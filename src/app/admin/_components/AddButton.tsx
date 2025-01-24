@@ -84,7 +84,7 @@ export default function AddButton() {
               padding: "20px",
               borderRadius: "8px",
               margin: "10px",
-              minWidth: "300px",
+              minWidth: "100px",
             }}
           >
             <h2 className="font-bold">Dish Info</h2>

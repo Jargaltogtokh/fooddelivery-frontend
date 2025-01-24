@@ -13,6 +13,7 @@ import { setgid } from "process";
 import { useState, useEffect } from "react";
 import Category from "../../_components/Categories";
 import AddButton from "../../_components/AddButton";
+import { EditButton } from "../../_components/EditButton";
 
 type FoodType = {
   name: string;
@@ -91,19 +92,20 @@ export default function Page() {
           <div className="border outline-dashed outline-red-500 rounded-sm h-[271px] w-[250px]">
             <AddButton />
           </div>
-          {name.map((name) => (
+          {name.map((food) => (
             <div
-              className="border outline-1 rounded-sm h-[271px] w-[250px]"
-              key={name._id}
+              className="border outline-1 rounded-sm h-[271px] w-[250px] relative"
+              key={food._id}
             >
-              <img className="mt-2" src={name.image} />
+              <img className="mt-2" src={food.image} />
+              <EditButton food={food} />
               <div className="flex justify-between mt-2">
                 <div className="pb-2 text-red-500 font-lg font-bold">
-                  {name.name}
+                  {food.name}
                 </div>
-                <div>{name.price}</div>
+                <div>{food.price}</div>
               </div>
-              <div className="text-sm mt-2">{name.ingredients}</div>
+              <div className="text-sm mt-2">{food.ingredients}</div>
             </div>
           ))}
           <div className="flex gap-1 ml-5 flex-wrap"></div>
