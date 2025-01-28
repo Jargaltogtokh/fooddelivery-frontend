@@ -11,8 +11,14 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ShoppingCart } from "lucide-react";
-export function Order({ onClose }: { onClose: () => void }) {
+import { Divide, ShoppingCart } from "lucide-react";
+
+export const OrderSheet = () => {
+  const existingOrderString = localStorage.getItem("orderItems");
+  const existingOrder = JSON.parse(existingOrderString || "[]");
+  const [foodOrderItems, setOrderItems] = useState<OrderItem[]>(existingOrder);
+
+export const Order = ({ onClose }: { onClose: () => void }) => {
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50"
@@ -47,9 +53,19 @@ export function Order({ onClose }: { onClose: () => void }) {
                 <CardTitle>My cart</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" defaultValue="Pedro Duarte" />
+                <div className="space-y-1">{existingOrder[0]?.food?.name}</div>
+                <div>
+                  {" "}
+                  {foodOrderItems?.map((orderItem: any) => (
+                    <div key={orderItem?.food?._id}>
+                      <div>{orderItem?.food?.foodName}</div>
+                      <div>
+                        <button>-</button>
+                        <p>{orderItem?.quantity}</p>
+                        <button>+</button>
+                        </div>
+                    </div>
+                  ))}
                 </div>
                 <div className="space-y-1">
                   <Label htmlFor="username">Username</Label>
@@ -82,6 +98,11 @@ export function Order({ onClose }: { onClose: () => void }) {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter>
+                <Button className="bg-red-500 border rounded-lg w-full">
+                  Checkout
+                </Button>
+              </CardFooter>
             </Card>
           </TabsContent>
           <TabsContent value="password">
@@ -120,9 +141,6 @@ export function Order({ onClose }: { onClose: () => void }) {
                   </div>
                 </div>
               </CardContent>
-              <CardFooter>
-                <Button>Checkout</Button>
-              </CardFooter>
             </Card>
           </TabsContent>
         </Tabs>
@@ -134,4 +152,4 @@ export function Order({ onClose }: { onClose: () => void }) {
       </div>
     </div>
   );
-}
+};
