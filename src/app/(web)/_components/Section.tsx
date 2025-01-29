@@ -4,20 +4,19 @@ import { useState, useEffect } from "react";
 import CategoryUser from "./categories";
 import { useParams } from "next/navigation";
 import Category from "@/app/admin/_components/Categories";
+import { Button } from "@/components/ui/button";
 
 type FoodType = {
   name: string;
   _id: number;
-  price: string;
+  price: number;
   image: string;
   ingredients: string;
   categoryId: string;
 };
-
-type Props = {
-  params: {
-    id: string;
-  };
+type OrderItem = {
+  food: FoodType;
+  quantity: number;
 };
 
 type CategoryType = {
@@ -27,6 +26,22 @@ type CategoryType = {
 
 export function Section({ category }: { category: CategoryType }) {
   const [name, setName] = useState<FoodType[]>([]);
+
+  const addFoodToOrder = (food: FoodType) => {
+    const orderItems: OrderItem[] = JSON.parse(
+      localStorage.getItem("orderItems") || "[]"
+    );
+
+    const existingItem = orderItems.find((item) => item.food._id === food._id);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      orderItems.push({ food, quantity: 1 });
+    }
+
+    localStorage.setItem("orderItems", JSON.stringify(orderItems));
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,9 +70,10 @@ export function Section({ category }: { category: CategoryType }) {
                 <div className="pb-2 text-red-500 font-lg font-bold">
                   {name.name}
                 </div>
-                <div>{name.price}</div>
+                <div>${name.price}</div>
               </div>
               <div className="text-sm mt-2">{name.ingredients}</div>
+              <Button onClick={() => addFoodToOrder(name)}> +1</Button>
             </div>
           ))}
         </div>

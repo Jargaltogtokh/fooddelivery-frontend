@@ -4,7 +4,7 @@ import { Pencil } from "lucide-react";
 type FoodType = {
   name: string;
   _id: number;
-  price: string;
+  price: number;
   image: string;
   ingredients: string;
   categoryId: string;

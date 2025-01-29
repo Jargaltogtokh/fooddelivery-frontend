@@ -2,14 +2,20 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import Image from "next/image"; // Don't forget to import Image
 import { CategoryType } from "../page";
+import { Button } from "@/components/ui/button";
 
 type FoodType = {
   name: string;
   _id: number;
-  price: string;
+  price: number;
   image: string;
   ingredients: string;
   categoryId: string;
+};
+
+type OrderItem = {
+  food: FoodType;
+  quantity: number;
 };
 
 export default function CategoryUser({
@@ -21,6 +27,22 @@ export default function CategoryUser({
     null
   );
   const [foods, setFoods] = useState<FoodType[]>([]);
+
+  const addFoodToOrder = (food: FoodType) => {
+    const orderItems: OrderItem[] = JSON.parse(
+      localStorage.getItem("orderItems") || "[]"
+    );
+
+    const existingItem = orderItems.find((item) => item.food._id === food._id);
+
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      orderItems.push({ food, quantity: 1 });
+    }
+
+    localStorage.setItem("orderItems", JSON.stringify(orderItems));
+  };
 
   useEffect(() => {
     if (selectedCategory) {
@@ -61,7 +83,7 @@ export default function CategoryUser({
       </div>
 
       {selectedCategory && (
-        <div className="mt-10">
+        <div className="mt-10  data-[state=active]:bg-red-500">
           <div className="flex-wrap w-full ">
             <h2 className="font-bold mt-5 ml-5 text-white">
               {selectedCategory.categoryName}
@@ -93,9 +115,10 @@ export default function CategoryUser({
                       <h3 className="font-semibold text-red-500">
                         {food.name}
                       </h3>
-                      <p className="">{food.price}</p>
+                      <p className="">${food.price}</p>
                     </div>
                     <p className="mt-5 font-5">{food.ingredients}</p>
+                    <Button onClick={() => addFoodToOrder(food)}> +1</Button>
                   </div>
                 ))
               ) : (

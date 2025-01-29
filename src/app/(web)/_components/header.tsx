@@ -6,14 +6,18 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { ShoppingCart, MapPin } from "lucide-react";
-import { Order } from "./orderdetails";
+import { OrderSheet } from "./orderdetails";
 import { useState } from "react";
 
 export default function Header() {
   const [isOrderVisible, setIsOrderVisible] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const handleCartClick = () => {
     setIsOrderVisible((prev) => !prev);
+  };
+  const onClose = () => {
+    setIsOpen(false); // Close the modal by updating state
   };
 
   return (
@@ -45,7 +49,9 @@ export default function Header() {
         </div>
       </div>
       <img src="BG.png" className="w-full h-[570px]" alt="" />
-      {isOrderVisible && <Order onClose={() => setIsOrderVisible(false)} />}
+      {isOrderVisible && (
+        <OrderSheet onClose={() => setIsOrderVisible(false)} />
+      )}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +13,76 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Divide, ShoppingCart } from "lucide-react";
 
-export const OrderSheet = () => {
+type OrderItem = {
+  food: { _id: string; foodName: string; price: number };
+  quantity: number;
+};
+
+interface OrderSheetProps {
+  onClose: () => void;
+}
+
+type Food = {
+  name: string;
+  _id: string;
+  price: number;
+  image: string;
+  ingredients: string;
+};
+
+export const OrderSheet = ({ onClose }: OrderSheetProps) => {
   const existingOrderString = localStorage.getItem("orderItems");
   const existingOrder = JSON.parse(existingOrderString || "[]");
   const [foodOrderItems, setOrderItems] = useState<OrderItem[]>(existingOrder);
+  const [isOpen, setIsOpen] = useState(true);
 
-export const Order = ({ onClose }: { onClose: () => void }) => {
-  return (
+  const onMinusOrderItem = (idx: number) => {
+    const newOrderItems = foodOrderItems.map((orderItem, index) => {
+      if (idx === index && orderItem.quantity > 1) {
+        return {
+          ...orderItem,
+          quantity: orderItem.quantity - 1,
+        };
+      } else {
+        return orderItem;
+      }
+    });
+    setOrderItems(newOrderItems);
+    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
+  };
+
+  const onPlusOrderItem = (idx: number) => {
+    const newOrderItems = foodOrderItems.map((orderItem, index) => {
+      if (idx === index) {
+        return {
+          ...orderItem,
+          quantity: orderItem.quantity + 1,
+        };
+      } else {
+        return orderItem;
+      }
+    });
+    setOrderItems(newOrderItems);
+    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
+  };
+
+  const removeButton = (idx: number) => {
+    // Remove the item at the given index
+    const newOrderItems = foodOrderItems.filter((_, index) => index !== idx);
+
+    // Update the state and localStorage
+    setOrderItems(newOrderItems);
+    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
+  };
+  useEffect(() => {
+    const existingOrderString = localStorage.getItem("orderItems");
+    const existingOrder = JSON.parse(existingOrderString || "[]");
+    setOrderItems(existingOrder);
+  }, [localStorage]);
+
+  console.log({ foodOrderItems });
+
+  return isOpen ? (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50"
       onClick={onClose}
@@ -53,23 +116,51 @@ export const Order = ({ onClose }: { onClose: () => void }) => {
                 <CardTitle>My cart</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                <div className="space-y-1">{existingOrder[0]?.food?.name}</div>
-                <div>
-                  {" "}
-                  {foodOrderItems?.map((orderItem: any) => (
-                    <div key={orderItem?.food?._id}>
-                      <div>{orderItem?.food?.foodName}</div>
+                {/* <div className="space-y-1">{existingOrder[0]?.food?.name}</div> */}
+                <div className="space-y-1">
+                  {foodOrderItems?.map((orderItem: any, idx: number) => (
+                    <div
+                      key={orderItem?.food?._id}
+                      className="flex justify-between"
+                    >
                       <div>
-                        <button>-</button>
-                        <p>{orderItem?.quantity}</p>
-                        <button>+</button>
+                        <img
+                          className="h-[100px] w-[124px] rounded-lg object-cover"
+                          src={orderItem?.food?.image}
+                        />
+                      </div>
+                      <div className="flex flex-col justify-between ml-4 w-full">
+                        <div className="text-red-500">
+                          {orderItem?.food?.name}
                         </div>
+                        {/* <button onClick={removeButton}></button> */}
+                        <div className="text-sm font-normal">
+                          {orderItem?.food?.ingredients}
+                        </div>
+
+                        <div className="flex gap-2 text-sm font-normal justify-between">
+                          <div className="flex gap-3">
+                            <button onClick={() => onMinusOrderItem(idx)}>
+                              -
+                            </button>
+                            <p className="font-bold">{orderItem?.quantity}</p>
+                            <button onClick={() => onPlusOrderItem(idx)}>
+                              +
+                            </button>
+                            <button
+                              className="text-red-500 hover:underline mt-2"
+                              onClick={() => removeButton(idx)}
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          <div className="font-bold">
+                            ${orderItem?.food?.price}
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   ))}
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="username">Username</Label>
-                  <Input id="username" defaultValue="@peduarte" />
                 </div>
               </CardContent>
               <CardFooter>
@@ -86,15 +177,36 @@ export const Order = ({ onClose }: { onClose: () => void }) => {
                 <div>
                   <div className="flex justify-between">
                     <p className="text-gray-600">Items</p>
-                    <p>$0.99</p>
+                    <p>
+                      $
+                      {foodOrderItems
+                        ?.reduce((total, orderItem) => {
+                          return (
+                            total + orderItem?.quantity * orderItem?.food?.price
+                          );
+                        }, 0)
+                        .toFixed(2)}
+                    </p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-600">Shipping</p>
-                    <p>$0.99</p>
+                    <p>${0.99}</p>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-gray-600">Total</p>
-                    <p>$0.99</p>
+                    <p>
+                      {" "}
+                      $
+                      {foodOrderItems
+                        ?.reduce((total, orderItem) => {
+                          return (
+                            total +
+                            orderItem?.quantity * orderItem?.food?.price +
+                            0.99
+                          );
+                        }, 0)
+                        .toFixed(2)}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -151,5 +263,5 @@ export const Order = ({ onClose }: { onClose: () => void }) => {
         </div>
       </div>
     </div>
-  );
+  ) : null;
 };

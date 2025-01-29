@@ -18,7 +18,7 @@ import { EditButton } from "../../_components/EditButton";
 type FoodType = {
   name: string;
   _id: number;
-  price: string;
+  price: number;
   image: string;
   ingredients: string;
   categoryId: string;
@@ -79,7 +79,7 @@ export default function Page() {
     };
     fetchData();
   }, []);
-
+  console.log(name);
   return (
     <>
       <Category />
@@ -103,7 +103,7 @@ export default function Page() {
                 <div className="pb-2 text-red-500 font-lg font-bold">
                   {food.name}
                 </div>
-                <div>{food.price}</div>
+                <div>${food.price}</div>
               </div>
               <div className="text-sm mt-2">{food.ingredients}</div>
             </div>

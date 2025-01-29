@@ -5,7 +5,7 @@ import Category from "../admin/_components/Categories";
 import Footer from "./_components/footer";
 import Header from "./_components/header";
 import CategoryUser from "./_components/categories";
-import { Section } from "./_components/Section";
+import { Section } from "./_components/section";
 
 export type CategoryType = { categoryName: string; _id: string };
 

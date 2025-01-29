@@ -2,14 +2,20 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import Image from "next/image"; // Don't forget to import Image
 import { CategoryType } from "../page";
+import { Button } from "@/components/ui/button";
 
 type FoodType = {
   name: string;
   _id: number;
-  price: string;
+  price: number;
   image: string;
   ingredients: string;
   categoryId: string;
+};
+
+type OrderItem = {
+  food: FoodType;
+  quantity: number;
 };
 
 export default function CategoryUser({
@@ -50,10 +56,7 @@ export default function CategoryUser({
             onClick={() => setSelectedCategory(category)}
             className="cursor-pointer"
           >
-            <Badge
-              variant="outline"
-              className="bg-white text-black "
-            >
+            <Badge variant="outline" className="bg-white text-black ">
               {category.categoryName}
             </Badge>
           </div>
@@ -71,7 +74,7 @@ export default function CategoryUser({
                 foods.map((food) => (
                   <div
                     key={food._id}
-                    className="border bg-white rounded-md"
+                    className="border bg-blue-800 rounded-md "
                     style={{
                       width: "250px",
                     }}
@@ -93,7 +96,7 @@ export default function CategoryUser({
                       <h3 className="font-semibold text-red-500">
                         {food.name}
                       </h3>
-                      <p className="">{food.price}</p>
+                      <p className="">${food.price}</p>
                     </div>
                     <p className="mt-5 font-5">{food.ingredients}</p>
                   </div>
