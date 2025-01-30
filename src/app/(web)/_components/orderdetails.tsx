@@ -117,7 +117,7 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
               </CardHeader>
               <CardContent className="space-y-2">
                 {/* <div className="space-y-1">{existingOrder[0]?.food?.name}</div> */}
-                <div className="space-y-1">
+                <div className="space-y-4">
                   {foodOrderItems?.map((orderItem: any, idx: number) => (
                     <div
                       key={orderItem?.food?._id}
@@ -130,8 +130,16 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
                         />
                       </div>
                       <div className="flex flex-col justify-between ml-4 w-full">
-                        <div className="text-red-500">
-                          {orderItem?.food?.name}
+                        <div className="flex justify-between">
+                          <div className="text-red-500">
+                            {orderItem?.food?.name}
+                          </div>
+                          <button
+                            className="text-red-500 border border-red-500 solid rounded-full p-1 font-bold text-xs pl-2 pr-2 h-10 w-10 "
+                            onClick={() => removeButton(idx)}
+                          >
+                            X
+                          </button>
                         </div>
                         {/* <button onClick={removeButton}></button> */}
                         <div className="text-sm font-normal">
@@ -147,12 +155,6 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
                             <button onClick={() => onPlusOrderItem(idx)}>
                               +
                             </button>
-                            <button
-                              className="text-red-500 hover:underline mt-2"
-                              onClick={() => removeButton(idx)}
-                            >
-                              Remove
-                            </button>
                           </div>
                           <div className="font-bold">
                             ${orderItem?.food?.price}
@@ -164,8 +166,8 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="bg-red-500 border rounded-lg w-full">
-                  Add food
+                <Button className="bg-red-500 border  rounded-lg w-full">
+                  <a href="http://localhost:3000/">Add food</a>
                 </Button>
               </CardFooter>
             </Card>

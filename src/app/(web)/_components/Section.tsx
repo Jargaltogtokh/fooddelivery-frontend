@@ -5,10 +5,11 @@ import CategoryUser from "./categories";
 import { useParams } from "next/navigation";
 import Category from "@/app/admin/_components/Categories";
 import { Button } from "@/components/ui/button";
+import FoodCart from "./foodCart";
 
 type FoodType = {
   name: string;
-  _id: number;
+  _id: string;
   price: number;
   image: string;
   ingredients: string;
@@ -62,7 +63,7 @@ export function Section({ category }: { category: CategoryType }) {
         <div className="flex gap-[20px] flex-wrap">
           {name.map((name) => (
             <div
-              className="border outline-1 rounded-sm h-[271px] w-[250px] bg-white"
+              className="border outline-1 rounded-sm mb-4 w-[250px] bg-white"
               key={name._id}
             >
               <img className="mt-2" src={name.image} />
@@ -73,7 +74,8 @@ export function Section({ category }: { category: CategoryType }) {
                 <div>${name.price}</div>
               </div>
               <div className="text-sm mt-2">{name.ingredients}</div>
-              <Button onClick={() => addFoodToOrder(name)}> +1</Button>
+              {/* <Button onClick={}> <FoodCart/> </Button> */}
+              <FoodCart food={name} />
             </div>
           ))}
         </div>
