@@ -67,15 +67,17 @@ export default function AddButton() {
       {isOpen && (
         <div
           style={{
-            height: "100vh",
-            width: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            maxHeight: "600px",
+            maxWidth: "400px",
+            backgroundColor: "rgba(0, 0, 0.2)",
             position: "fixed",
-            top: 0,
-            left: 0,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)", // This centers the modal
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            zIndex: 10,
           }}
         >
           <div
@@ -139,6 +141,7 @@ export default function AddButton() {
                     src={food.image}
                     alt="Food"
                     width={300}
+                    height={300}
                     className="block w-full"
                   />
                 )}
