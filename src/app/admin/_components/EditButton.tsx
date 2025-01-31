@@ -86,7 +86,7 @@ export function EditButton({ food }: { food: FoodType }) {
       {editing && (
         <div
           style={{
-            maxHeight: "600px",
+            maxHeight: "900px",
             maxWidth: "400px",
             backgroundColor: "rgba(0, 0, 0.2)",
             position: "fixed",

@@ -67,7 +67,7 @@ export default function AddButton() {
       {isOpen && (
         <div
           style={{
-            maxHeight: "600px",
+            maxHeight: "900px",
             maxWidth: "400px",
             backgroundColor: "rgba(0, 0, 0.2)",
             position: "fixed",
