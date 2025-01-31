@@ -59,47 +59,53 @@ const FoodCart: React.FC<FoodCartProps> = ({ food, onAddToCart }) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" onClick={openDialog}>
-          Add food
+        <Button
+          variant="outline"
+          onClick={openDialog}
+          className="border rounded-full text-red-500 bg-white pr-3 pl-3 hover:bg-red-500"
+        >
+          +
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>{food.name}</DialogTitle>
-          <DialogDescription>
-            Add the food to your cart or make changes.
-          </DialogDescription>
+      <DialogContent className="sm:max-w-[826px] max-h-[442px]">
+        <DialogHeader className="sr-only">
+          <DialogTitle></DialogTitle>
+          <DialogDescription></DialogDescription>
         </DialogHeader>
-
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
+        <div className="grid gap-4 py-4 w-full h-full">
+          <div className="grid grid-cols-2 gap-4">
             <Image
               src={food.image}
               alt={food.name}
-              width={150}
-              height={150}
-              className="rounded-md object-cover"
+              width={377}
+              height={364}
+              className="rounded-md object-cover w-[377px] h-[364px]"
             />
-            <div className="col-span-3">
-              <h2 className="text-lg font-semibold mt-2">{food.name}</h2>
-              <p className="text-sm text-gray-600">{food.ingredients}</p>
-              <p className="text-red-500 font-bold mt-1">${food.price}</p>
+            <div className="mt-2">
+              <h2 className="text-red-500 text-2xl font-semibold mt-2">
+                {food.name}
+              </h2>
+              <p className="text-sm text-gray-600 mt-2">{food.ingredients}</p>
+              <p className="mt-40">Total price</p>
+              <p className="text-2xl font-bold">${food.price}</p>
 
-              <Button onClick={() => addFoodToOrder(food)}> +1</Button>
+              <Button className="w-full" onClick={() => addFoodToOrder(food)}>
+                {" "}
+                Add to cart
+              </Button>
+              {/* <Button
+                type="button"
+                variant="outline"
+                onClick={closeDialog} // Close button works now
+              >
+                Close
+              </Button> */}
             </div>
           </div>
         </div>
 
-        <DialogFooter>
-          <Button
-            type="button"
-            variant="outline"
-            onClick={closeDialog} // Close button works now
-          >
-            Close
-          </Button>
-        </DialogFooter>
+        <DialogFooter></DialogFooter>
       </DialogContent>
     </Dialog>
   );

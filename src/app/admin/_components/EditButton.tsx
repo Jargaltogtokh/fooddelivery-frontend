@@ -78,23 +78,25 @@ export function EditButton({ food }: { food: FoodType }) {
     <div>
       <button
         onClick={openEditModal}
-        className="absolute top-12 right-4 text-white"
+        className="absolute top-24 right-4 text-red-500 border rounded-full bg-white pr-2 pl-2"
       >
-        <Pencil />
+        +
       </button>
 
       {editing && (
         <div
           style={{
-            height: "100vh",
-            width: "100%",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            maxHeight: "600px",
+            maxWidth: "400px",
+            backgroundColor: "rgba(0, 0, 0.2)",
             position: "fixed",
-            top: 0,
-            left: 0,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)", // This centers the modal
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            zIndex: 10,
           }}
         >
           <div

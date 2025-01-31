@@ -4,17 +4,20 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Divide, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 
 type OrderItem = {
-  food: { _id: string; foodName: string; price: number };
+  food: {
+    _id: string;
+    name: string;
+    price: number;
+    image: string;
+    ingredients: string;
+  };
   quantity: number;
 };
 
@@ -22,67 +25,51 @@ interface OrderSheetProps {
   onClose: () => void;
 }
 
-type Food = {
-  name: string;
-  _id: string;
-  price: number;
-  image: string;
-  ingredients: string;
-};
-
 export const OrderSheet = ({ onClose }: OrderSheetProps) => {
-  const existingOrderString = localStorage.getItem("orderItems");
-  const existingOrder = JSON.parse(existingOrderString || "[]");
-  const [foodOrderItems, setOrderItems] = useState<OrderItem[]>(existingOrder);
-  const [isOpen, setIsOpen] = useState(true);
+  // Initialize order items from localStorage
+  const [foodOrderItems, setOrderItems] = useState<OrderItem[]>([]);
 
-  const onMinusOrderItem = (idx: number) => {
-    const newOrderItems = foodOrderItems.map((orderItem, index) => {
-      if (idx === index && orderItem.quantity > 1) {
-        return {
-          ...orderItem,
-          quantity: orderItem.quantity - 1,
-        };
-      } else {
-        return orderItem;
-      }
-    });
-    setOrderItems(newOrderItems);
-    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
-  };
-
-  const onPlusOrderItem = (idx: number) => {
-    const newOrderItems = foodOrderItems.map((orderItem, index) => {
-      if (idx === index) {
-        return {
-          ...orderItem,
-          quantity: orderItem.quantity + 1,
-        };
-      } else {
-        return orderItem;
-      }
-    });
-    setOrderItems(newOrderItems);
-    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
-  };
-
-  const removeButton = (idx: number) => {
-    // Remove the item at the given index
-    const newOrderItems = foodOrderItems.filter((_, index) => index !== idx);
-
-    // Update the state and localStorage
-    setOrderItems(newOrderItems);
-    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
-  };
   useEffect(() => {
     const existingOrderString = localStorage.getItem("orderItems");
     const existingOrder = JSON.parse(existingOrderString || "[]");
     setOrderItems(existingOrder);
-  }, [localStorage]);
+  }, []);
 
-  console.log({ foodOrderItems });
+  const updateOrderInLocalStorage = (newOrderItems: OrderItem[]) => {
+    localStorage.setItem("orderItems", JSON.stringify(newOrderItems));
+    setOrderItems(newOrderItems); // Update state to reflect in the UI
+  };
 
-  return isOpen ? (
+  const onMinusOrderItem = (idx: number) => {
+    const newOrderItems = [...foodOrderItems];
+    if (newOrderItems[idx].quantity > 1) {
+      newOrderItems[idx].quantity -= 1;
+      updateOrderInLocalStorage(newOrderItems);
+    }
+  };
+
+  const onPlusOrderItem = (idx: number) => {
+    const newOrderItems = [...foodOrderItems];
+    newOrderItems[idx].quantity += 1;
+    updateOrderInLocalStorage(newOrderItems);
+  };
+
+  const removeButton = (idx: number) => {
+    const newOrderItems = foodOrderItems.filter((_, index) => index !== idx);
+    updateOrderInLocalStorage(newOrderItems);
+  };
+
+  // Calculate total
+  const calculateTotal = () => {
+    return foodOrderItems
+      .reduce(
+        (total, orderItem) => total + orderItem.quantity * orderItem.food.price,
+        0
+      )
+      .toFixed(2);
+  };
+
+  return (
     <div
       className="fixed inset-0 bg-black bg-opacity-50 flex justify-end items-start z-50"
       onClick={onClose}
@@ -91,173 +78,147 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
         className="bg-[#404040] rounded-xl shadow-lg w-[535px] p-6"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
-        <Tabs defaultValue="account" className="font-bold text-white w-full">
-          <div className="flex gap-5">
-            <ShoppingCart size={24}> Order Detail </ShoppingCart>
-            <h2 className="text-lg text-center mb-4"> Order detail</h2>
+        <Tabs defaultValue="cart" className="font-bold text-white w-full">
+          <div className="flex gap-5 mb-4">
+            <ShoppingCart size={24} />
+            <h2 className="text-lg">Order Details</h2>
           </div>
           <TabsList className="grid w-full grid-cols-2">
             <TabsTrigger
-              value="account"
-              className="hover:bg-red-500 focus:bg-red-500  data-[state=active]:bg-red-500  data-[state=active]:text-white"
+              value="cart"
+              className="hover:bg-red-500 focus:bg-red-500 data-[state=active]:bg-red-500 data-[state=active]:text-white"
             >
               Cart
             </TabsTrigger>
             <TabsTrigger
-              value="password"
-              className="hover:bg-red-500 focus:bg-red-500  data-[state=active]:bg-red-500 data-[state=active]:text-white"
+              value="order"
+              className="hover:bg-red-500 focus:bg-red-500 data-[state=active]:bg-red-500 data-[state=active]:text-white"
             >
               Order
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="account">
+
+          <TabsContent value="cart">
             <Card>
               <CardHeader>
-                <CardTitle>My cart</CardTitle>
+                <CardTitle>My Cart</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {/* <div className="space-y-1">{existingOrder[0]?.food?.name}</div> */}
-                <div className="space-y-4">
-                  {foodOrderItems?.map((orderItem: any, idx: number) => (
-                    <div
-                      key={orderItem?.food?._id}
-                      className="flex justify-between"
-                    >
-                      <div>
-                        <img
-                          className="h-[100px] w-[124px] rounded-lg object-cover"
-                          src={orderItem?.food?.image}
-                        />
+                {foodOrderItems.map((orderItem, idx) => (
+                  <div
+                    key={orderItem.food._id}
+                    className="flex justify-between items-center"
+                  >
+                    <img
+                      className="h-[100px] w-[124px] rounded-lg object-cover"
+                      src={orderItem.food.image}
+                      alt={orderItem.food.name}
+                    />
+                    <div className="flex flex-1 flex-col justify-between ml-4 w-full">
+                      <div className="flex justify-between">
+                        <div className="text-red-500">
+                          {orderItem.food.name}
+                        </div>
+                        <button
+                          aria-label="Remove item"
+                          className="text-red-500 border border-red-500 rounded-full p-1 font-bold text-xs pr-2 pl-2"
+                          onClick={() => removeButton(idx)}
+                        >
+                          X
+                        </button>
                       </div>
-                      <div className="flex flex-col justify-between ml-4 w-full">
-                        <div className="flex justify-between">
-                          <div className="text-red-500">
-                            {orderItem?.food?.name}
-                          </div>
-                          <button
-                            className="text-red-500 border border-red-500 solid rounded-full p-1 font-bold text-xs pl-2 pr-2 h-10 w-10 "
-                            onClick={() => removeButton(idx)}
-                          >
-                            X
+                      <div className="text-sm">
+                        {orderItem.food.ingredients}
+                      </div>
+                      <div className="flex gap-2 justify-between">
+                        <div className="flex gap-3">
+                          <button onClick={() => onMinusOrderItem(idx)}>
+                            -
+                          </button>
+                          <p className="font-bold">{orderItem.quantity}</p>
+                          <button onClick={() => onPlusOrderItem(idx)}>
+                            +
                           </button>
                         </div>
-                        {/* <button onClick={removeButton}></button> */}
-                        <div className="text-sm font-normal">
-                          {orderItem?.food?.ingredients}
-                        </div>
-
-                        <div className="flex gap-2 text-sm font-normal justify-between">
-                          <div className="flex gap-3">
-                            <button onClick={() => onMinusOrderItem(idx)}>
-                              -
-                            </button>
-                            <p className="font-bold">{orderItem?.quantity}</p>
-                            <button onClick={() => onPlusOrderItem(idx)}>
-                              +
-                            </button>
-                          </div>
-                          <div className="font-bold">
-                            ${orderItem?.food?.price}
-                          </div>
+                        <div className="font-bold">
+                          $
+                          {(orderItem.quantity * orderItem.food.price).toFixed(
+                            2
+                          )}
                         </div>
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </CardContent>
               <CardFooter>
-                <Button className="bg-red-500 border  rounded-lg w-full">
-                  <a href="http://localhost:3000/">Add food</a>
+                <Button
+                  className="bg-red-500 rounded-lg w-full"
+                  onClick={() =>
+                    (window.location.href = "http://localhost:3000/")
+                  }
+                >
+                  Add Food
                 </Button>
               </CardFooter>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Payment info</CardTitle>
+                <CardTitle>Payment Info</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-600">Items</p>
-                    <p>
-                      $
-                      {foodOrderItems
-                        ?.reduce((total, orderItem) => {
-                          return (
-                            total + orderItem?.quantity * orderItem?.food?.price
-                          );
-                        }, 0)
-                        .toFixed(2)}
-                    </p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-600">Shipping</p>
-                    <p>${0.99}</p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-600">Total</p>
-                    <p>
-                      {" "}
-                      $
-                      {foodOrderItems
-                        ?.reduce((total, orderItem) => {
-                          return (
-                            total +
-                            orderItem?.quantity * orderItem?.food?.price +
-                            0.99
-                          );
-                        }, 0)
-                        .toFixed(2)}
-                    </p>
-                  </div>
+              <CardContent>
+                <div className="flex justify-between">
+                  <p className="text-gray-600">Items</p>
+                  <p>${calculateTotal()}</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-gray-600">Shipping</p>
+                  <p>$0.99</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-gray-600">Total</p>
+                  <p>${(parseFloat(calculateTotal()) + 0.99).toFixed(2)}</p>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button className="bg-red-500 border rounded-lg w-full">
+                <Button className="bg-red-500 rounded-lg w-full">
                   Checkout
                 </Button>
               </CardFooter>
             </Card>
           </TabsContent>
-          <TabsContent value="password">
+
+          <TabsContent value="order">
             <Card>
               <CardHeader>
-                <CardTitle>Order history</CardTitle>
+                <CardTitle>Order History</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <p></p>
-                  <p></p>
-                </div>
-                <div className="space-y-1">
-                  <p></p>
-                  <p></p>
-                </div>
+              <CardContent>
+                <div className="space-y-2">No order history yet.</div>
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Payment info</CardTitle>
+                <CardTitle>Payment Info</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-600">Items</p>
-                    <p>$0.99</p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-600">Shipping</p>
-                    <p>$0.99</p>
-                  </div>
-                  <div className="flex justify-between">
-                    <p className="text-gray-600">Total</p>
-                    <p>$0.99</p>
-                  </div>
+              <CardContent>
+                <div className="flex justify-between">
+                  <p className="text-gray-600">Items</p>
+                  <p>$0.99</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-gray-600">Shipping</p>
+                  <p>$0.99</p>
+                </div>
+                <div className="flex justify-between">
+                  <p className="text-gray-600">Total</p>
+                  <p>$1.98</p>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
         </Tabs>
+
         <div className="mt-4 flex justify-end">
           <Button variant="ghost" onClick={onClose}>
             Close
@@ -265,5 +226,5 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
         </div>
       </div>
     </div>
-  ) : null;
+  );
 };

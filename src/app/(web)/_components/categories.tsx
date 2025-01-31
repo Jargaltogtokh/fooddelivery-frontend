@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import Image from "next/image"; // Don't forget to import Image
 import { CategoryType } from "../page";
 import { Button } from "@/components/ui/button";
+import FoodCart from "./foodCart";
 
 type FoodType = {
   name: string;
-  _id: number;
+  _id: string;
   price: number;
   image: string;
   ingredients: string;
@@ -93,7 +94,7 @@ export default function CategoryUser({
                 foods.map((food) => (
                   <div
                     key={food._id}
-                    className="border bg-white rounded-md"
+                    className="border bg-white rounded-md relative"
                     style={{
                       width: "250px",
                     }}
@@ -104,7 +105,7 @@ export default function CategoryUser({
                         alt={food.name}
                         width={250}
                         height={142.48}
-                        className="rounded-md mt-2"
+                        className="rounded-lg mt-2 h-[142.48px]"
                       />
                     ) : (
                       <div className="bg-gray-700 w-full h-32 mb-2 rounded-md flex items-center justify-center">
@@ -118,7 +119,9 @@ export default function CategoryUser({
                       <p className="">${food.price}</p>
                     </div>
                     <p className="mt-5 font-5">{food.ingredients}</p>
-                    <Button onClick={() => addFoodToOrder(food)}> +1</Button>
+                    <div className="absolute top-20 right-3">
+                      <FoodCart food={food} />
+                    </div>
                   </div>
                 ))
               ) : (

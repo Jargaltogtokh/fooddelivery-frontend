@@ -17,7 +17,7 @@ export const useAuthRequest = (path: string) => {
       method: "POST",
       headers: {
         authentication: token,
-      },
+      } as HeadersInit,
     })
       .then((res) => res.json())
       .then((data) => setData(data));

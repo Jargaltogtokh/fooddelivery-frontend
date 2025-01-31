@@ -89,15 +89,15 @@ export default function Page() {
         </div>
 
         <div className="flex ml-5 gap-1 flex-wrap">
-          <div className="border outline-dashed outline-red-500 rounded-sm h-[271px] w-[250px]">
+          <div className="border outline-dashed outline-red-500 rounded-sm  w-[250px]">
             <AddButton />
           </div>
           {name.map((food) => (
             <div
-              className="border outline-1 rounded-sm h-[271px] w-[250px] relative"
+              className="border outline-1 rounded-sm w-[250px] relative"
               key={food._id}
             >
-              <img className="mt-2" src={food.image} />
+              <img className="mt-2 w-[365.33px] h-[150px]" src={food.image} />
               <EditButton food={food} />
               <div className="flex justify-between mt-2">
                 <div className="pb-2 text-red-500 font-lg font-bold">

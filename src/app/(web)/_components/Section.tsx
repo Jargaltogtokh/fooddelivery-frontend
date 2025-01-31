@@ -63,10 +63,13 @@ export function Section({ category }: { category: CategoryType }) {
         <div className="flex gap-[20px] flex-wrap">
           {name.map((name) => (
             <div
-              className="border outline-1 rounded-sm mb-4 w-[250px] bg-white"
+              className="relative border outline-1 rounded-sm mb-4 w-[250px] bg-white"
               key={name._id}
             >
-              <img className="mt-2" src={name.image} />
+              <img
+                className="mt-2 w-[365.33px] h-[150px] rounded-lg"
+                src={name.image}
+              />
               <div className="flex justify-between mt-2">
                 <div className="pb-2 text-red-500 font-lg font-bold">
                   {name.name}
@@ -75,7 +78,9 @@ export function Section({ category }: { category: CategoryType }) {
               </div>
               <div className="text-sm mt-2">{name.ingredients}</div>
               {/* <Button onClick={}> <FoodCart/> </Button> */}
-              <FoodCart food={name} />
+              <div className="absolute top-20 right-3">
+                <FoodCart food={name} />
+              </div>
             </div>
           ))}
         </div>
