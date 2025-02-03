@@ -9,20 +9,6 @@ import { Section } from "./_components/section";
 
 export type CategoryType = { categoryName: string; _id: string };
 
-type FoodType = {
-  name: string;
-  _id: string;
-  price: number;
-  image: string;
-  ingredients: string;
-  categoryId: string;
-};
-
-type OrderItem = {
-  food: FoodType;
-  quantity: number;
-};
-
 export default function Home() {
   const [categories, setCategories] = useState<CategoryType[]>([]);
 
