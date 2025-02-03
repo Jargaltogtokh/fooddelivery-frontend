@@ -1,3 +1,4 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from "react";
 import Image from "next/image"; // Don't forget to import Image

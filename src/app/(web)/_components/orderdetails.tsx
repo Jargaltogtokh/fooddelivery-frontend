@@ -9,6 +9,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ShoppingCart } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 type OrderItem = {
   food: {
@@ -127,7 +129,7 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
                           X
                         </button>
                       </div>
-                      <div className="text-sm">
+                      <div className="text-sm font-normal">
                         {orderItem.food.ingredients}
                       </div>
                       <div className="flex gap-2 justify-between">
@@ -178,6 +180,15 @@ export const OrderSheet = ({ onClose }: OrderSheetProps) => {
                 <div className="flex justify-between">
                   <p className="text-gray-600">Total</p>
                   <p>${(parseFloat(calculateTotal()) + 0.99).toFixed(2)}</p>
+                </div>
+                <div className="space-y-1 mt-5">
+                  <Label
+                    htmlFor="name"
+                    className="text-gray-600 text-md font-bold"
+                  >
+                    Address
+                  </Label>
+                  <Input id="name" defaultValue="" />
                 </div>
               </CardContent>
               <CardFooter>
