@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Footer from "./_components/footer";
 import Header from "./_components/header";
 import CategoryUser from "./_components/categories";
-import { Section } from "./_components/section";
+import { Section } from "./_components/section1";
 
 export type CategoryType = { categoryName: string; _id: string };
 
