@@ -1,10 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import CategoryUser from "./categories";
-import { useParams } from "next/navigation";
-import Category from "@/app/admin/_components/Categories";
-import { Button } from "@/components/ui/button";
 import FoodCart from "./foodCart";
 
 type FoodType = {

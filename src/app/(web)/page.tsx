@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Category from "../admin/_components/Categories";
+import React, { useState, useEffect } from "react";
 import Footer from "./_components/footer";
 import Header from "./_components/header";
 import CategoryUser from "./_components/categories";
