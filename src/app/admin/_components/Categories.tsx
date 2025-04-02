@@ -18,7 +18,7 @@ export default function Category() {
     const categoryName = prompt("Enter new category name");
     if (!categoryName) return;
 
-    const response = await fetch("http://localhost:8001/food-category", {
+    const response = await fetch("https://fooddelivery-backend-kfxl.onrender.com/food-category", {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ categoryName }),
@@ -30,7 +30,7 @@ export default function Category() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("http://localhost:8001/food-category");
+      const response = await fetch("https://fooddelivery-backend-kfxl.onrender.com/food-category");
       const data = await response.json();
       setCategories(data);
     };

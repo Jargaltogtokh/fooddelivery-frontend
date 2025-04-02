@@ -47,7 +47,7 @@ export default function Page() {
     const name = prompt("Enter new food to the category");
     if (!name) return;
 
-    const response = await fetch(`http://localhost:8001/food`, {
+    const response = await fetch(`https://fooddelivery-backend-kfxl.onrender.com/food`, {
       method: "POST",
       headers: { "Content-type": "application/json" },
       body: JSON.stringify({ name }),
@@ -60,7 +60,7 @@ export default function Page() {
   useEffect(() => {
     const fetchCategoryName = async () => {
       const response = await fetch(
-        `http://localhost:8001/food-category/${params.id}`
+        `https://fooddelivery-backend-kfxl.onrender.com/food-category/${params.id}`
       );
       const data: CategoryType = await response.json();
       console.log(data);
@@ -72,7 +72,7 @@ export default function Page() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:8001/food?category=${params.id}`
+        `https://fooddelivery-backend-kfxl.onrender.com/food?category=${params.id}`
       );
       const data = await response.json();
       setName(data);

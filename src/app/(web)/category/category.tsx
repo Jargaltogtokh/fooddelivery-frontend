@@ -34,7 +34,7 @@ export default function CategoryUser({
       const fetchFoods = async () => {
         try {
           const response = await fetch(
-            `http://localhost:8001/food?category=${selectedCategory._id}`
+            `https://fooddelivery-backend-kfxl.onrender.com/food?category=${selectedCategory._id}`
           );
           const data = await response.json();
           setFoods(data);

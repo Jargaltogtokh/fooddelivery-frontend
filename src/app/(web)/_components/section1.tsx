@@ -43,7 +43,7 @@ export function Section({ category }: { category: CategoryType }) {
   useEffect(() => {
     const fetchData = async () => {
       const query = category?._id ? `?category=${category?._id}` : "";
-      const response = await fetch(`http://localhost:8001/food${query}`);
+      const response = await fetch(`https://fooddelivery-backend-kfxl.onrender.com/food${query}`);
       const data = await response.json();
       setName(data);
     };
